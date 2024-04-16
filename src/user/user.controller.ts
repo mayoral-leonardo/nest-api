@@ -38,11 +38,7 @@ export class UserController {
     @Body() body: UpdatePutUserDTO,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    return {
-      method: 'put',
-      body,
-      id,
-    };
+    return this.userService.update(id, body);
   }
 
   @Patch(':id')
@@ -50,11 +46,7 @@ export class UserController {
     @Body() body: UpdatePatchUserDTO,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    return {
-      method: 'patch',
-      body,
-      id,
-    };
+    return this.userService.updatePartial(id, body);
   }
 
   @Delete(':id')
