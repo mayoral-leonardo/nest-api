@@ -1,15 +1,106 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  BadRequestException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { PrismaClient, User } from '@prisma/client';
+import { UserService } from 'src/user/user.service';
+import { AuthRegisterDTO } from './dto/auth-register.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly jwtService: JwtService) {}
+  private issuer = 'login';
+  private audience = 'users';
 
-  async createToken() {
-    // return this.jwtService.sign()
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly prisma: PrismaClient,
+    private readonly userService: UserService,
+  ) {}
+
+  async createToken(user: User) {
+    return {
+      accessToken: this.jwtService.sign(
+        {
+          id: user.id,
+          name: user.name,
+          email: user.id,
+        },
+        {
+          expiresIn: '7 days',
+          subject: String(user.id),
+          issuer: this.issuer,
+          audience: this.audience,
+        },
+      ),
+    };
   }
 
   async checkToken(token: string) {
-    // return this.jwtService.verify()
+    try {
+      const data = await this.jwtService.verify(token, {
+        issuer: this.issuer,
+        audience: this.audience,
+      });
+
+      return data;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
+
+  async isValidToken(token: string) {
+    try {
+      await this.checkToken(token);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async login(email: string, password: string) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        email,
+        password,
+      },
+    });
+
+    if (!user) throw new UnauthorizedException('Wrong e-mail and/or password!');
+
+    return this.createToken(user);
+  }
+
+  async forgot(email: string) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) throw new UnauthorizedException('Wrong e-mail!');
+
+    //TO-DO: send password recovery e-mail
+
+    return true;
+  }
+
+  async reset(password: string, token: string) {
+    //TO-DO: validate token
+
+    const id = 0; // will be changed when token gets validated
+
+    const user = await this.prisma.user.update({
+      where: { id },
+      data: { password },
+    });
+
+    return this.createToken(user);
+  }
+
+  async register(data: AuthRegisterDTO) {
+    const user = await this.userService.create(data);
+    return this.createToken(user);
   }
 }
