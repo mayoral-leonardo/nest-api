@@ -1,14 +1,24 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user-dto';
 import { PrismaService } from './../prisma/prisma.service';
 import { UpdatePutUserDTO } from './dto/update-put-user-dto';
 import { UpdatePatchUserDTO } from './dto/update-patch-user-dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateUserDTO) {
+    await this.emailExists(data.email);
+    const salt = await bcrypt.genSalt();
+
+    data.password = await bcrypt.hash(data.password, salt);
+
     return await this.prisma.user.create({
       data,
     });
@@ -33,6 +43,11 @@ export class UserService {
     { email, name, password, birthAt, role }: UpdatePutUserDTO,
   ) {
     await this.exists(id);
+    await this.emailExists(email);
+
+    const salt = await bcrypt.genSalt();
+
+    password = await bcrypt.hash(password, salt);
 
     return await this.prisma.user.update({
       data: {
@@ -57,9 +72,16 @@ export class UserService {
     const data: any = {};
 
     if (birthAt) data.birthAt = new Date(birthAt);
-    if (email) data.email = email;
+    if (email) {
+      await this.emailExists(email);
+      data.email = email;
+    }
     if (name) data.name = name;
-    if (password) data.password = password;
+    if (password) {
+      const salt = await bcrypt.genSalt();
+
+      data.password = await bcrypt.hash(password, salt);
+    }
     if (role) data.role = role;
 
     return await this.prisma.user.update({
@@ -88,6 +110,18 @@ export class UserService {
       }))
     ) {
       throw new NotFoundException(`User ${id} does not exist!`);
+    }
+  }
+
+  async emailExists(email: string) {
+    if (
+      await this.prisma.user.count({
+        where: {
+          email,
+        },
+      })
+    ) {
+      throw new BadRequestException(`E-mail already registered!`);
     }
   }
 }
