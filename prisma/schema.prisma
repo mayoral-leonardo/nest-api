@@ -13,9 +13,17 @@ model User {
   email     String    @db.VarChar(127)
   password  String    @db.VarChar(127)
   birthAt   DateTime? @db.Date
-  role      Int       @default(1)
   createdAt DateTime  @default(now()) @db.Timestamp(0)
   updatedAt DateTime  @default(now()) @db.Timestamp(0)
+  role      Int       @default(1)
 
   @@map("users")
+}
+
+model measurement {
+  measurement_ID Int     @id
+  equipment_ID   Int?
+  user_ID        Int
+  value          Float  @db.Float
+  unit           String? @db.VarChar(50)
 }
