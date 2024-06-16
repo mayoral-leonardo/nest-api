@@ -15,8 +15,6 @@ export class MeasuringDataController {
       user_ID: Number(body.user_ID),
       value: Number(body.value),
     };
-
-    console.log({ data });
     return this.measuringDataService.create(data);
   }
 
