@@ -1,6 +1,6 @@
 import { IsNumberString } from 'class-validator';
 
-export class GlucoseDataRegister {
+export class MeasuringDataRegister {
   @IsNumberString()
   dataString: string;
 }
