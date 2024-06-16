@@ -5,7 +5,7 @@ import { ThrottlerGuard } from '@nestjs/throttler/dist/throttler.guard';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { GlucoseModule } from './glucoseData/glucoseData.module';
+import { MeasuringDataModule } from './measuringData/measuringData.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -18,7 +18,7 @@ import { UserModule } from './user/user.module';
     ]),
     forwardRef(() => UserModule),
     forwardRef(() => AuthModule),
-    GlucoseModule,
+    MeasuringDataModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
