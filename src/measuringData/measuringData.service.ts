@@ -16,10 +16,6 @@ export class MeasuringDataService {
         `Invalid parameters! Please review and try again!`,
       );
     }
-    // if ((data as any).measurement_ID) delete (data as any).measurement_ID;
-    // return await this.prisma.measurement.create({
-    //   data,
-    // });
   }
 
   async list() {
