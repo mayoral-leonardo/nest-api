@@ -10,7 +10,6 @@ export class MeasuringDataController {
   async create(@Body() body: MeasuringDataRegisterDTO) {
     const data = {
       ...body,
-      measurement_ID: Number(body.measurement_ID),
       equipment_ID: Number(body.equipment_ID),
       user_ID: Number(body.user_ID),
       value: Number(body.value),

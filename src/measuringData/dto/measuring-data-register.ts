@@ -1,13 +1,6 @@
-import {
-  IsNumberString,
-  IsOptional,
-  IsString,
-  IsNumber,
-} from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class MeasuringDataRegisterDTO {
-  measurement_ID: number;
-
   @IsOptional()
   equipment_ID: number;
 
