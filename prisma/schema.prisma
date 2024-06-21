@@ -21,7 +21,7 @@ model User {
 }
 
 model measurement {
-  measurement_ID Int     @id
+  measurement_ID Int     @id @default(autoincrement())
   equipment_ID   Int?
   user_ID        Int
   value          Float  @db.Float
