@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { MeasuringDataRegisterDTO } from './dto/measuring-data-register';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class MeasuringDataService {
