@@ -4,6 +4,8 @@ import { prismaMock } from '../testing/prisma-service.mock';
 import { jwtServiceMock } from '../testing/jwt-service.mock';
 import { userServiceMock } from '../testing/user-service.mock';
 import { prismaClientMock } from '../testing/prisma-client.mock';
+import { prismaUserEntityList } from '../testing/prisma-user-entity.list.mock';
+import { accessToken } from '../testing/access-token.mock';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -27,69 +29,12 @@ describe('AuthService', () => {
     expect(userMock).toBeDefined();
   });
 
-  // describe('Create', () => {
-  //   test('Method: Create', async () => {
-  //     jest.spyOn(userMock, 'count').mockResolvedValueOnce(false);
+  describe('Token', () => {
+    test('Create Token', async () => {
+      const result = await authService.createToken(prismaUserEntityList[0]);
 
-  //     const data: CreateUserDTO = {
-  //       name: 'Leonardo',
-  //       email: 'leonardo@teste.com',
-  //       password: '123456',
-  //       birthAt: '2000-01-01',
-  //       role: Role.Admin,
-  //     };
-
-  //     const result = await userService.create(data);
-
-  //     expect(result).toEqual(prismaUserEntityList[0]);
-  //   });
-  // });
-
-  // describe('Read', () => {
-  //   test('Method: List', async () => {
-  //     const result = await userService.list();
-
-  //     expect(result).toEqual(prismaUserEntityList);
-  //   });
-
-  //   test('Method: Show', async () => {
-  //     const result = await userService.show(1);
-
-  //     expect(result).toEqual(prismaUserEntityList[0]);
-  //   });
-  // });
-  // describe('Update', () => {
-  //   test('Method: Update', async () => {
-  //     jest.spyOn(userService, 'exists').mockResolvedValueOnce();
-  //     jest.spyOn(userMock, 'count').mockResolvedValueOnce(false);
-
-  //     const data: UpdatePutUserDTO = {
-  //       name: 'Leonardo',
-  //       email: 'leonardo@teste.com',
-  //       password: '123456',
-  //       birthAt: '2000-01-01',
-  //       role: Role.Admin,
-  //     };
-
-  //     const result = await userService.update(1, data);
-
-  //     expect(result).toEqual(prismaUserEntityList[0]);
-  //   });
-
-  //   test('Method: Update Partial', async () => {
-  //     const data: UpdatePatchUserDTO = {
-  //       role: Role.Admin,
-  //     };
-  //     const result = await userService.updatePartial(1, data);
-
-  //     expect(result).toEqual(prismaUserEntityList[0]);
-  //   });
-  // });
-  // describe('Delete', () => {
-  //   test('Method: Delete', async () => {
-  //     const result = await userService.delete(1);
-
-  //     expect(result).toEqual(true);
-  //   });
-  // });
+      expect(result).toEqual({ accessToken });
+    });
+  });
+  describe('Autenticação', () => {});
 });
