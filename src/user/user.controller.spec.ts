@@ -38,6 +38,16 @@ describe('UserController', () => {
     expect(userService).toBeDefined();
   });
 
+  describe('Guards test', () => {
+    test('Validate Guards application', async () => {
+      const guards = Reflect.getMetadata('__guards__', UserController);
+
+      expect(guards.length).toEqual(2);
+      expect(new guards[0]()).toBeInstanceOf(AuthGuard);
+      expect(new guards[1]()).toBeInstanceOf(RoleGuard);
+    });
+  });
+
   describe('Create', () => {
     test('Method: Create', async () => {
       const result = await userController.create(createUserDTOMock);
