@@ -92,12 +92,9 @@ export class AuthService {
   async reset(password: string, token) {
     //TO-DO: validate token
 
-    const id = 0; // will be changed when token gets validated
+    const id = 2; // will be changed when token gets validated
 
-    const user = await this.prisma.user.update({
-      where: { id },
-      data: { password },
-    });
+    const user = await this.userService.updatePartial(id, { password });
 
     return this.createToken(user);
   }
