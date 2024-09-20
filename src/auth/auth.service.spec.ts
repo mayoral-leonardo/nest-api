@@ -6,6 +6,7 @@ import { userServiceMock } from '../testing/user-service.mock';
 import { prismaClientMock } from '../testing/prisma-client.mock';
 import { prismaUserEntityList } from '../testing/prisma-user-entity.list.mock';
 import { accessToken } from '../testing/access-token.mock';
+import { jwtPayload } from '../testing/jwt-payload.mock';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -34,6 +35,18 @@ describe('AuthService', () => {
       const result = await authService.createToken(prismaUserEntityList[0]);
 
       expect(result).toEqual({ accessToken });
+    });
+
+    test('Check Token', async () => {
+      const result = await authService.checkToken(accessToken);
+
+      expect(result).toEqual(jwtPayload);
+    });
+
+    test('isValidToken', async () => {
+      const result = await authService.isValidToken(accessToken);
+
+      expect(result).toEqual(true);
     });
   });
   describe('Autenticação', () => {});
