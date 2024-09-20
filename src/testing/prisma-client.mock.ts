@@ -5,6 +5,7 @@ export const prismaMock = {
   user: {
     create: jest.fn().mockResolvedValue(prismaUserEntityList[0]),
     findMany: jest.fn().mockResolvedValue(prismaUserEntityList),
+    findFirst: jest.fn().mockResolvedValue(prismaUserEntityList[0]),
     findUnique: jest.fn().mockResolvedValue(prismaUserEntityList[0]),
     update: jest.fn().mockResolvedValue(prismaUserEntityList[0]),
     delete: jest.fn().mockResolvedValue(true),

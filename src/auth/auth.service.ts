@@ -89,7 +89,7 @@ export class AuthService {
     return true;
   }
 
-  async reset(password: string) {
+  async reset(password: string, token) {
     //TO-DO: validate token
 
     const id = 0; // will be changed when token gets validated
@@ -103,6 +103,8 @@ export class AuthService {
   }
 
   async register(data: AuthRegisterDTO) {
+    if (data.role) delete data.role;
+
     const user = await this.userService.create(data);
     return this.createToken(user);
   }
