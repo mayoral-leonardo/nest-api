@@ -6,6 +6,9 @@ import { Role } from '../enums/role.enum';
 import { prismaUserEntityList } from '../testing/prisma-user-entity.list.mock';
 import { UpdatePutUserDTO } from './dto/update-put-user-dto';
 import { UpdatePatchUserDTO } from './dto/update-patch-user-dto';
+import { createUserDTOMock } from '../testing/create-user-dto.mock';
+import { updatePatchUserDTOMock } from '../testing/update-patch-user-dto.mock';
+import { updatePutUserDTOMock } from '../testing/update-put-user-dto.mock';
 
 describe('UserService', () => {
   let userService: UserService;
@@ -28,15 +31,7 @@ describe('UserService', () => {
     test('Method: Create', async () => {
       jest.spyOn(userMock, 'count').mockResolvedValueOnce(false);
 
-      const data: CreateUserDTO = {
-        name: 'Leonardo',
-        email: 'leonardo@teste.com',
-        password: '123456',
-        birthAt: '2000-01-01',
-        role: Role.Admin,
-      };
-
-      const result = await userService.create(data);
+      const result = await userService.create(createUserDTOMock);
 
       expect(result).toEqual(prismaUserEntityList[0]);
     });
@@ -60,24 +55,13 @@ describe('UserService', () => {
       jest.spyOn(userService, 'exists').mockResolvedValueOnce();
       jest.spyOn(userMock, 'count').mockResolvedValueOnce(false);
 
-      const data: UpdatePutUserDTO = {
-        name: 'Leonardo',
-        email: 'leonardo@teste.com',
-        password: '123456',
-        birthAt: '2000-01-01',
-        role: Role.Admin,
-      };
-
-      const result = await userService.update(1, data);
+      const result = await userService.update(1, updatePutUserDTOMock);
 
       expect(result).toEqual(prismaUserEntityList[0]);
     });
 
     test('Method: Update Partial', async () => {
-      const data: UpdatePatchUserDTO = {
-        role: Role.Admin,
-      };
-      const result = await userService.updatePartial(1, data);
+      const result = await userService.updatePartial(1, updatePatchUserDTOMock);
 
       expect(result).toEqual(prismaUserEntityList[0]);
     });
