@@ -5,9 +5,9 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClient, User } from '@prisma/client';
-import { UserService } from 'src/user/user.service';
 import { AuthRegisterDTO } from './dto/auth-register.dto';
 import * as bcrypt from 'bcrypt';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -89,20 +89,19 @@ export class AuthService {
     return true;
   }
 
-  async reset(password: string, token: string) {
+  async reset(password: string, token) {
     //TO-DO: validate token
 
-    const id = 0; // will be changed when token gets validated
+    const id = 2; // will be changed when token gets validated
 
-    const user = await this.prisma.user.update({
-      where: { id },
-      data: { password },
-    });
+    const user = await this.userService.updatePartial(id, { password });
 
     return this.createToken(user);
   }
 
   async register(data: AuthRegisterDTO) {
+    if (data.role) delete data.role;
+
     const user = await this.userService.create(data);
     return this.createToken(user);
   }
