@@ -16,6 +16,8 @@ model User {
   createdAt DateTime  @default(now()) @db.Timestamp(0)
   updatedAt DateTime  @default(now()) @db.Timestamp(0)
   role      Int       @default(1)
+  height    Int?
+  weight    Float?
 
   @@map("users")
 }

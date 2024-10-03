@@ -32,4 +32,10 @@ export class CreateUserDTO {
   @IsOptional()
   @IsEnum(Role)
   role?: number;
+
+  @IsOptional()
+  height?: number;
+
+  @IsOptional()
+  weight?: number;
 }
