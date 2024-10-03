@@ -19,6 +19,9 @@ export class UserService {
 
     data.password = await bcrypt.hash(data.password, salt);
 
+    if (data.height) data.height = Number(data.height);
+    if (data.weight) data.weight = Number(data.weight);
+
     return await this.prisma.user.create({
       data,
     });
@@ -40,7 +43,7 @@ export class UserService {
 
   async update(
     id: number,
-    { email, name, password, birthAt, role }: UpdatePutUserDTO,
+    { email, name, password, birthAt, role, height, weight }: UpdatePutUserDTO,
   ) {
     await this.exists(id);
     await this.emailExists(email);
@@ -56,6 +59,8 @@ export class UserService {
         password,
         birthAt: birthAt ? new Date(birthAt) : null,
         role,
+        height: Number(height),
+        weight: Number(weight),
       },
       where: {
         id,
@@ -65,7 +70,15 @@ export class UserService {
 
   async updatePartial(
     id: number,
-    { email, name, password, birthAt, role }: UpdatePatchUserDTO,
+    {
+      email,
+      name,
+      password,
+      birthAt,
+      role,
+      height,
+      weight,
+    }: UpdatePatchUserDTO,
   ) {
     await this.exists(id);
 
@@ -83,6 +96,8 @@ export class UserService {
       data.password = await bcrypt.hash(password, salt);
     }
     if (role) data.role = role;
+    if (height) data.height = Number(height);
+    if (weight) data.weight = Number(weight);
 
     return await this.prisma.user.update({
       data,

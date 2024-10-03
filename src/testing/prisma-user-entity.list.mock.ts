@@ -10,6 +10,8 @@ export const prismaUserEntityList = [
     birthAt: new Date('2000-01-01'),
     createdAt: new Date(),
     updatedAt: new Date(),
+    height: 200,
+    weight: 100,
   },
   {
     id: 2,
@@ -20,5 +22,7 @@ export const prismaUserEntityList = [
     birthAt: new Date('2000-01-01'),
     createdAt: new Date(),
     updatedAt: new Date(),
+    height: 200,
+    weight: 100,
   },
 ];
