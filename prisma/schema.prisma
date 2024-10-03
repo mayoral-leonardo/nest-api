@@ -28,4 +28,5 @@ model measurement {
   user_ID        Int
   value          Float  @db.Float
   unit           String? @db.VarChar(50)
+  createdAt DateTime  @default(now()) @db.Timestamp(0)
 }
