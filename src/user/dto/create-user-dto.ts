@@ -38,4 +38,6 @@ export class CreateUserDTO {
 
   @IsOptional()
   weight?: number;
+
+  cpf: string;
 }

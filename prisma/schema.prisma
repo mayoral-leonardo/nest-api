@@ -18,6 +18,7 @@ model User {
   role      Int       @default(1)
   height    Int?
   weight    Float?
+  cpf       String    @db.Char(11)
 
   @@map("users")
 }
