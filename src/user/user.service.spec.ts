@@ -1,11 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { prismaMock, PrismaServiceMock } from '../testing/prisma-service.mock';
 import { UserService } from './user.service';
-import { CreateUserDTO } from './dto/create-user-dto';
-import { Role } from '../enums/role.enum';
 import { prismaUserEntityList } from '../testing/prisma-user-entity.list.mock';
-import { UpdatePutUserDTO } from './dto/update-put-user-dto';
-import { UpdatePatchUserDTO } from './dto/update-patch-user-dto';
 import { createUserDTOMock } from '../testing/create-user-dto.mock';
 import { updatePatchUserDTOMock } from '../testing/update-patch-user-dto.mock';
 import { updatePutUserDTOMock } from '../testing/update-put-user-dto.mock';
@@ -30,6 +26,7 @@ describe('UserService', () => {
   describe('Create', () => {
     test('Method: Create', async () => {
       jest.spyOn(userMock, 'count').mockResolvedValueOnce(false);
+      jest.spyOn(userService, 'cpfExists').mockResolvedValueOnce();
 
       const result = await userService.create(createUserDTOMock);
 

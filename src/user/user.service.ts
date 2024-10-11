@@ -8,12 +8,22 @@ import { PrismaService } from './../prisma/prisma.service';
 import { UpdatePutUserDTO } from './dto/update-put-user-dto';
 import { UpdatePatchUserDTO } from './dto/update-patch-user-dto';
 import * as bcrypt from 'bcrypt';
+import { validateCPF } from './../utils/functions';
 
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateUserDTO) {
+    if (!data.cpf) {
+      throw new BadRequestException('CPF is required');
+    }
+
+    if (!validateCPF(data.cpf)) {
+      throw new BadRequestException('Invalid CPF');
+    }
+
+    await this.cpfExists(data.cpf);
     await this.emailExists(data.email);
     const salt = await bcrypt.genSalt();
 
@@ -58,6 +68,7 @@ export class UserService {
         name,
         password,
         birthAt: birthAt ? new Date(birthAt) : null,
+        updatedAt: new Date(),
         role,
         height: Number(height),
         weight: Number(weight),
@@ -99,6 +110,8 @@ export class UserService {
     if (height) data.height = Number(height);
     if (weight) data.weight = Number(weight);
 
+    data.updatedAt = new Date();
+
     return await this.prisma.user.update({
       data,
       where: {
@@ -137,6 +150,18 @@ export class UserService {
       })
     ) {
       throw new BadRequestException(`E-mail already registered!`);
+    }
+  }
+
+  async cpfExists(cpf: string) {
+    if (
+      await this.prisma.user.count({
+        where: {
+          cpf,
+        },
+      })
+    ) {
+      throw new BadRequestException(`CPF already registered!`);
     }
   }
 }
