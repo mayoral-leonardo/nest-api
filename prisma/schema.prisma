@@ -19,6 +19,8 @@ model User {
   height    Int?
   weight    Float?
   cpf       String    @db.Char(11)
+  responsibilities UserResponsibility[] @relation("UserResponsible")
+  dependents UserResponsibility[] @relation("UserDependent")
 
   @@map("users")
 }
@@ -30,4 +32,15 @@ model measurement {
   value          Float  @db.Float
   unit           String? @db.VarChar(50)
   createdAt DateTime  @default(now()) @db.Timestamp(0)
+}
+
+model UserResponsibility {
+  id                 Int  @id @default(autoincrement())
+  responsibleUserId  Int @db.UnsignedInt
+  dependentUserId    Int @db.UnsignedInt
+  responsibleUser    User @relation("UserResponsible", fields: [responsibleUserId], references: [id])
+  dependentUser      User @relation("UserDependent", fields: [dependentUserId], references: [id])
+
+  @@map("user_responsibilities")
+  @@unique([responsibleUserId, dependentUserId])
 }
