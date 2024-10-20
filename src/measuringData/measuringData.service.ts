@@ -25,7 +25,15 @@ export class MeasuringDataService {
     }
   }
 
-  async list() {
+  async list(user_id: number) {
+    return await this.prisma.measurement.findMany({
+      where: {
+        user_ID: user_id,
+      },
+    });
+  }
+
+  async listAll() {
     return await this.prisma.measurement.findMany();
   }
 

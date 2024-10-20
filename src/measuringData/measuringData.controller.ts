@@ -28,9 +28,14 @@ export class MeasuringDataController {
     return this.measuringDataService.create(data);
   }
 
+  @Get('/user/:id')
+  async list(@ParamId() id: number) {
+    return this.measuringDataService.list(id);
+  }
+
   @Get()
-  async list() {
-    return this.measuringDataService.list();
+  async listAll() {
+    return this.measuringDataService.listAll();
   }
 
   @Get(':id')
