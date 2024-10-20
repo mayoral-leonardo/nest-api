@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { MeasuringDataModule } from './measuringData/measuringData.module';
 import { UserModule } from './user/user.module';
+import { UserResponsibilityModule } from './userResponsibility/userResponsibility.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UserModule } from './user/user.module';
     forwardRef(() => UserModule),
     forwardRef(() => AuthModule),
     MeasuringDataModule,
+    UserResponsibilityModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
