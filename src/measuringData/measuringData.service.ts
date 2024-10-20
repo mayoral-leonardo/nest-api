@@ -3,12 +3,17 @@ import { MeasuringDataRegisterDTO } from './dto/measuring-data-register';
 import { PrismaService } from '../prisma/prisma.service';
 import { MeasuringDataUpdatePutDTO } from './dto/measuring-data-update-put';
 import { MeasuringDataUpdatePatchDTO } from './dto/measuring-data-update-patch';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class MeasuringDataService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly userService: UserService,
+  ) {}
 
   async create(data: MeasuringDataRegisterDTO) {
+    await this.userService.exists(data.user_ID);
     try {
       return await this.prisma.measurement.create({
         data,
@@ -20,7 +25,15 @@ export class MeasuringDataService {
     }
   }
 
-  async list() {
+  async list(user_id: number) {
+    return await this.prisma.measurement.findMany({
+      where: {
+        user_ID: user_id,
+      },
+    });
+  }
+
+  async listAll() {
     return await this.prisma.measurement.findMany();
   }
 

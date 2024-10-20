@@ -32,6 +32,7 @@ model measurement {
   value          Float  @db.Float
   unit           String? @db.VarChar(50)
   createdAt DateTime  @default(now()) @db.Timestamp(0)
+  measurementDate String?
 }
 
 model UserResponsibility {

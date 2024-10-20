@@ -3,13 +3,14 @@ import { prismaMock, PrismaServiceMock } from '../testing/prisma-service.mock';
 import { MeasuringDataService } from './measuringData.service';
 import { measuringDataRegisterDTOMock } from './../testing/measuring-data-register-dto.mock';
 import { prismaMeasuringDataEntityList } from './../testing/prisma-measuring-data-entity.list.mock';
+import { UserService } from '../user/user.service';
 
 describe('MeasuringDataService', () => {
   let measuringDataService: MeasuringDataService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [MeasuringDataService, PrismaServiceMock],
+      providers: [MeasuringDataService, PrismaServiceMock, UserService],
     }).compile();
 
     measuringDataService =
@@ -32,7 +33,7 @@ describe('MeasuringDataService', () => {
 
   describe('Read', () => {
     test('Method: List', async () => {
-      const result = await measuringDataService.list();
+      const result = await measuringDataService.list(2);
 
       expect(result).toEqual(prismaMeasuringDataEntityList);
     });
