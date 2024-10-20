@@ -17,17 +17,6 @@ import { MeasuringDataService } from './measuringData.service';
 export class MeasuringDataController {
   constructor(private readonly measuringDataService: MeasuringDataService) {}
 
-  @Post()
-  async create(@Body() body: MeasuringDataRegisterDTO) {
-    const data = {
-      ...body,
-      equipment_ID: Number(body.equipment_ID),
-      user_ID: Number(body.user_ID),
-      value: Number(body.value),
-    };
-    return this.measuringDataService.create(data);
-  }
-
   @Get('/user/:id')
   async list(@ParamId() id: number) {
     return this.measuringDataService.list(id);
@@ -41,6 +30,17 @@ export class MeasuringDataController {
   @Get(':id')
   async show(@ParamId() id: number) {
     return this.measuringDataService.show(id);
+  }
+
+  @Post()
+  async create(@Body() body: MeasuringDataRegisterDTO) {
+    const data = {
+      ...body,
+      equipment_ID: Number(body.equipment_ID),
+      user_ID: Number(body.user_ID),
+      value: Number(body.value),
+    };
+    return this.measuringDataService.create(data);
   }
 
   @Put(':id')

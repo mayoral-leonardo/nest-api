@@ -2,7 +2,7 @@ import { IsOptional, IsString } from 'class-validator';
 
 export class MeasuringDataRegisterDTO {
   @IsOptional()
-  equipment_ID: number;
+  equipment_ID?: number;
 
   user_ID: number;
 
@@ -10,5 +10,9 @@ export class MeasuringDataRegisterDTO {
 
   @IsOptional()
   @IsString()
-  unit: string;
+  unit?: string;
+
+  @IsOptional()
+  @IsString()
+  measurementDate?: string;
 }
