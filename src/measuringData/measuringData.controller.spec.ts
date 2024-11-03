@@ -40,7 +40,7 @@ describe('MeasuringDataController', () => {
 
   describe('Read', () => {
     test('Method: List', async () => {
-      const result = await measuringDataController.list();
+      const result = await measuringDataController.listAll();
 
       expect(result).toEqual(prismaMeasuringDataEntityList);
     });
