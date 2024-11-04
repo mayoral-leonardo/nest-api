@@ -3,7 +3,7 @@ import { prismaMeasuringDataEntityList } from './prisma-measuring-data-entity.li
 
 export const measuringDataMock = {
   create: jest.fn().mockResolvedValue(prismaMeasuringDataEntityList[0]),
-  list: jest.fn().mockResolvedValue(prismaMeasuringDataEntityList),
+  listAll: jest.fn().mockResolvedValue(prismaMeasuringDataEntityList),
 };
 
 export const measuringDataServiceMock = {
