@@ -49,7 +49,7 @@ export class MeasuringDataService {
 
   async update(
     id: number,
-    { equipment_ID, unit, value }: MeasuringDataUpdatePutDTO,
+    { equipment_ID, unit, value, measurementDate }: MeasuringDataUpdatePutDTO,
   ) {
     await this.exists(id);
 
@@ -58,6 +58,7 @@ export class MeasuringDataService {
         equipment_ID,
         unit,
         value,
+        measurementDate,
       },
       where: {
         measurement_ID: id,
@@ -67,7 +68,7 @@ export class MeasuringDataService {
 
   async updatePartial(
     id: number,
-    { equipment_ID, unit, value }: MeasuringDataUpdatePatchDTO,
+    { equipment_ID, unit, value, measurementDate }: MeasuringDataUpdatePatchDTO,
   ) {
     await this.exists(id);
 
@@ -76,6 +77,7 @@ export class MeasuringDataService {
     if (equipment_ID) data.equipment_ID = equipment_ID;
     if (unit) data.unit = unit;
     if (value) data.value = value;
+    if (measurementDate) data.measurementDate = measurementDate;
 
     return await this.prisma.measurement.update({
       data,
